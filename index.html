@@ -121,6 +121,7 @@
 
     speakBtn.addEventListener('click', speak);
     stopBtn.addEventListener('click', stopSpeaking);
+    window.addEventListener('beforeunload', stopSpeaking);
   </script>
 </body>
 </html>
