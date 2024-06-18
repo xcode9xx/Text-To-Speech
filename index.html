@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text To Speech Converter</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 flex flex-col justify-center items-center h-screen">
+  <div class="bg-white p-8 rounded-lg shadow-md max-w-md w-full mb-4">
+    <h1 class="text-2xl font-bold mb-4 text-center">Text To Speech</h1>
+    <textarea
+      id="text-input"
+      class="w-full h-40 p-2 mb-4 border border-gray-300 rounded"
+      placeholder="ใช้ได้เพียงภาษาไทยเท่านั้น..."
+    ></textarea>
+    <div class="flex justify-between">
+      <button
+        id="speak-btn"
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      >
+        Speak
+      </button>
+      <button
+        id="stop-btn"
+        class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+        disabled
+      >
+        Stop
+      </button>
+    </div>
+  </div>
+  <p class="text-gray-500 text-sm">@K1Dev</p>
+
+  <script>
+    const textInput = document.getElementById('text-input');
+    const speakBtn = document.getElementById('speak-btn');
+    const stopBtn = document.getElementById('stop-btn');
+
+    let synth = window.speechSynthesis;
+    let voices = [];
+    let queue = [];
+
+    function populateVoiceList() {
+      voices = synth.getVoices();
+    }
+
+    function speak() {
+      const text = textInput.value.trim();
+      if (text) {
+        const lang = detectLanguage(text);
+        const voice = voices.find(v => v.lang.startsWith(lang));
+        if (voice) {
+          const utterance = new SpeechSynthesisUtterance(text);
+          utterance.voice = voice;
+          queue.push(utterance);
+          speakNext();
+     
+        }
+      }
+    }
+
+    function speakNext() {
+      if (queue.length > 0) {
+        const utterance = queue.shift();
+        synth.speak(utterance);
+        utterance.addEventListener('end', () => {
+          speakNext();
+        });
+        speakBtn.disabled = true;
+        stopBtn.disabled = false;
+      } else {
+        speakBtn.disabled = false;
+        stopBtn.disabled = true;
+      }
+    }
+
+    function stopSpeaking() {
+      synth.cancel();
+      queue = [];
+      speakBtn.disabled = false;
+      stopBtn.disabled = true;
+    }
+
+    function detectLanguage(text) {
+      const lang = text.match(/[a-zA-Z]/g);
+      if (lang) {
+        return lang[0].toLowerCase();
+      }
+      return 'th'; 
+    }
+
+    synth.addEventListener('voiceschanged', populateVoiceList);
+
+    speakBtn.addEventListener('click', speak);
+    stopBtn.addEventListener('click', stopSpeaking);
+  </script>
+</body>
+</html>
