@@ -50,7 +50,7 @@
       </button>
     </div>
   </div>
-  <p class="text-gray-500 text-sm">Created by Your Name</p>
+  <p class="text-gray-500 text-sm">@Hex</p>
 
   <script>
     const textInput = document.getElementById('text-input');
@@ -63,7 +63,7 @@
 
     function populateVoiceList() {
       voices = synth.getVoices();
-      showApp();
+      setTimeout(showApp, 5000); // Delay for 5 seconds
     }
 
     function showApp() {
@@ -81,7 +81,8 @@
           utterance.voice = voice;
           queue.push(utterance);
           speakNext();
-       
+        } else {
+          alert(`No voice found for language ${lang}`);
         }
       }
     }
@@ -113,7 +114,7 @@
       if (lang) {
         return lang[0].toLowerCase();
       }
-      return 'th'; 
+      return 'th'; // Default to Thai
     }
 
     synth.addEventListener('voiceschanged', populateVoiceList);
