@@ -23,17 +23,15 @@
   </style>
 </head>
 <body class="bg-gray-100 flex flex-col justify-center items-center h-screen">
-  <div id="loader" class="flex flex-col items-center">
-    <div class="loader"></div>
-    <p class="mt-4 text-gray-500">T2S ย่อมากจาก Text To Speech </p>
-  </div>
+ 
 
-  <div id="app" class="bg-white p-8 rounded-lg shadow-md max-w-md w-full mb-4 hidden">
+  <div id="app" class="bg-white p-8 rounded-lg shadow-md max-w-md w-full mb-4 ">
     <h1 class="text-2xl font-bold mb-4 text-center">Text To Speech</h1>
     <textarea
       id="text-input"
       class="w-full h-40 p-2 mb-4 border border-gray-300 rounded"
-      placeholder="ข้อความ..."
+      maxlength="10000" minlength="5" required
+      placeholder="ใช้ได้เพียงภาษาไทยเท่านั้น..."
     ></textarea>
     <div class="flex justify-between">
       <button
@@ -64,18 +62,19 @@
 
     function populateVoiceList() {
       voices = synth.getVoices();
-      setTimeout(showApp, 2000); 
+   
     }
 
-    function showApp() {
+/*     function showApp() {
       document.getElementById('loader').classList.add('hidden');
       document.getElementById('app').classList.remove('hidden');
-    }
+    } */
 
     function speak() {
       const text = textInput.value.trim();
       if (text) {
         const lang = detectLanguage(text);
+        console.log(lang)
         const voice = voices.find(v => v.lang.startsWith(lang));
         if (voice) {
           const utterance = new SpeechSynthesisUtterance(text);
