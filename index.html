@@ -5,9 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Text To Speech Converter</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .loader {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #3498db;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
 </head>
 <body class="bg-gray-100 flex flex-col justify-center items-center h-screen">
-  <div class="bg-white p-8 rounded-lg shadow-md max-w-md w-full mb-4">
+  <div id="loader" class="flex flex-col items-center">
+    <div class="loader"></div>
+    <p class="mt-4 text-gray-500">t2s</p>
+  </div>
+
+  <div id="app" class="bg-white p-8 rounded-lg shadow-md max-w-md w-full mb-4 hidden">
     <h1 class="text-2xl font-bold mb-4 text-center">Text To Speech</h1>
     <textarea
       id="text-input"
@@ -30,7 +50,7 @@
       </button>
     </div>
   </div>
-  <p class="text-gray-500 text-sm">@K1Dev</p>
+  <p class="text-gray-500 text-sm">Created by Your Name</p>
 
   <script>
     const textInput = document.getElementById('text-input');
@@ -43,6 +63,12 @@
 
     function populateVoiceList() {
       voices = synth.getVoices();
+      showApp();
+    }
+
+    function showApp() {
+      document.getElementById('loader').classList.add('hidden');
+      document.getElementById('app').classList.remove('hidden');
     }
 
     function speak() {
@@ -55,7 +81,7 @@
           utterance.voice = voice;
           queue.push(utterance);
           speakNext();
-     
+       
         }
       }
     }
