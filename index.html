@@ -24,7 +24,7 @@
 <body class="bg-gray-100 flex flex-col justify-center items-center h-screen">
   <div id="loader" class="flex flex-col items-center">
     <div class="loader"></div>
-    <p class="mt-4 text-gray-500">t2s</p>
+    <p class="mt-4 text-gray-500">T2S ย่อมากจาก Text To Speech </p>
   </div>
 
   <div id="app" class="bg-white p-8 rounded-lg shadow-md max-w-md w-full mb-4 hidden">
@@ -63,7 +63,7 @@
 
     function populateVoiceList() {
       voices = synth.getVoices();
-      setTimeout(showApp, 5000); // Delay for 5 seconds
+      setTimeout(showApp, 2000); 
     }
 
     function showApp() {
@@ -114,7 +114,7 @@
       if (lang) {
         return lang[0].toLowerCase();
       }
-      return 'th'; // Default to Thai
+      return 'th';
     }
 
     synth.addEventListener('voiceschanged', populateVoiceList);
